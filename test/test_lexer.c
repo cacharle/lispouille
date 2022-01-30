@@ -1,6 +1,6 @@
-#include <criterion/criterion.h>
 #include "lexer.h"
 #include "token.h"
+#include <criterion/criterion.h>
 
 Test(lex, integer)
 {
@@ -55,7 +55,8 @@ Test(lex, integer_octal)
     token_t *token = lex("0755");
     cr_assert_not_null(token);
     cr_assert_eq(token->tag, TOK_INTEGER);
-    cr_assert_eq(token->integer, 0755, "expected %ld actual %ld", 0755L, token->integer);
+    cr_assert_eq(
+        token->integer, 0755, "expected %ld actual %ld", 0755L, token->integer);
 }
 
 Test(lex, integer_octal_negative)
@@ -63,5 +64,38 @@ Test(lex, integer_octal_negative)
     token_t *token = lex("-0755");
     cr_assert_not_null(token);
     cr_assert_eq(token->tag, TOK_INTEGER);
-    cr_assert_eq(token->integer, -0755, "expected %ld actual %ld", -0755L, token->integer);
+    cr_assert_eq(
+        token->integer, -0755, "expected %ld actual %ld", -0755L, token->integer);
+}
+
+Test(lex, string)
+{
+    token_t *token = lex("\"foo\"");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_STRING);
+    cr_assert_str_eq(token->str, "foo");
+}
+
+Test(lex, string_escape)
+{
+    token_t *token = lex("\"fo\\o\"");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_STRING);
+    cr_assert_str_eq(token->str, "foo");
+    token = lex("\"f\\o\\o\"");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_STRING);
+    cr_assert_str_eq(token->str, "foo");
+    token = lex("\"f\\\\\\\\\"");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_STRING);
+    cr_assert_str_eq(token->str, "f\\\\");
+}
+
+Test(lex, string_escape_special)
+{
+    token_t *token = lex("\"\\t\\n\\r\\v\\f\"");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_STRING);
+    cr_assert_str_eq(token->str, "\t\n\r\v\f");
 }

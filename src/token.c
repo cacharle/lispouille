@@ -22,6 +22,13 @@ token_destroy(token_t *token)
     free(token);
 }
 
+void
+token_push_front(token_t **root, token_t *token)
+{
+    token->next = *root;
+    *root = token;
+}
+
 static char *token_tag_repr_lookup[] = {
     [TOK_UNDEFINED] = "undefined",
     [TOK_STRING] = "string",
@@ -43,18 +50,11 @@ token_print(token_t *token)
         switch (token->tag)
         {
         case TOK_SYM:
-        case TOK_STRING:
-            printf("\"%s\"", token->str);
-            break;
+        case TOK_STRING: printf("\"%s\"", token->str); break;
 
-        case TOK_INTEGER:
-            printf("%ld", token->integer);
-            break;
-        case TOK_REAL:
-            printf("%.2f", token->real);
-            break;
-        default:
-            break;
+        case TOK_INTEGER: printf("%ld", token->integer); break;
+        case TOK_REAL: printf("%.2f", token->real); break;
+        default: break;
         }
         fputc(']', stdout);
     }

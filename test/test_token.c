@@ -1,5 +1,5 @@
-#include <criterion/criterion.h>
 #include "token.h"
+#include <criterion/criterion.h>
 
 Test(token, new)
 {
