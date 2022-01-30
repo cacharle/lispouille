@@ -107,6 +107,8 @@ lex(char *input)
 
     while (*input != '\0')
     {
+        if (isspace(*input))
+            input++;
         if (isdigit(*input) || *input == '-')
         {
             token_t *token = lex_number(&input);
@@ -116,6 +118,23 @@ lex(char *input)
         {
             token_t *token = lex_string(&input);
             token_push_front(&root, token);
+        }
+        else if (*input == '(')
+        {
+            token_t *token = token_new();
+            token->tag = TOK_PARENT_OPEN;
+            token_push_front(&root, token);
+            input++;
+        }
+        else if (*input == ')')
+        {
+            token_t *token = token_new();
+            token->tag = TOK_PARENT_CLOSE;
+            token_push_front(&root, token);
+            input++;
+        }
+        else if (isprint(*input) && !isspace(*input))
+        {
         }
     }
     return root;

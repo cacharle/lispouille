@@ -99,3 +99,17 @@ Test(lex, string_escape_special)
     cr_assert_eq(token->tag, TOK_STRING);
     cr_assert_str_eq(token->str, "\t\n\r\v\f");
 }
+
+Test(lex, parent_open)
+{
+    token_t *token = lex("(");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_PARENT_OPEN);
+}
+
+Test(lex, parent_close)
+{
+    token_t *token = lex(")");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_PARENT_CLOSE);
+}
