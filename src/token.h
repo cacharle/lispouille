@@ -5,7 +5,7 @@ enum token_tag
 {
     TOK_UNDEFINED,
     TOK_STRING,
-    TOK_INTEGER ,
+    TOK_INTEGER,
     TOK_REAL,
     TOK_SYM,
     TOK_PARENT_OPEN,
@@ -14,12 +14,12 @@ enum token_tag
 
 typedef struct token
 {
-    struct token *next;
+    struct token  *next;
     enum token_tag tag;
     union
     {
-        char *str;
-        long integer;
+        char  *str;
+        long   integer;
         double real;
     };
 } token_t;

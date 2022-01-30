@@ -1,7 +1,8 @@
 #include "lexer.h"
 #include "token.h"
 
-int main()
+int
+main()
 {
     token_t *token = lex("-123");
 

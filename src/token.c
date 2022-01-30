@@ -1,6 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "token.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 token_t *
 token_new(void)
@@ -25,7 +25,7 @@ token_destroy(token_t *token)
 static char *token_tag_repr_lookup[] = {
     [TOK_UNDEFINED] = "undefined",
     [TOK_STRING] = "string",
-    [TOK_INTEGER ] = "integer ",
+    [TOK_INTEGER] = "integer ",
     [TOK_REAL] = "real",
     [TOK_SYM] = "sym",
     [TOK_PARENT_OPEN] = "parent_open",
@@ -42,12 +42,19 @@ token_print(token_t *token)
         fputc(' ', stdout);
         switch (token->tag)
         {
-            case TOK_SYM:
-            case TOK_STRING: printf("\"%s\"", token->str); break;
+        case TOK_SYM:
+        case TOK_STRING:
+            printf("\"%s\"", token->str);
+            break;
 
-            case TOK_INTEGER: printf("%ld", token->integer); break;
-            case TOK_REAL: printf("%.2f", token->real); break;
-            default: break;
+        case TOK_INTEGER:
+            printf("%ld", token->integer);
+            break;
+        case TOK_REAL:
+            printf("%.2f", token->real);
+            break;
+        default:
+            break;
         }
         fputc(']', stdout);
     }
