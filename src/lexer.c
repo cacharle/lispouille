@@ -1,35 +1,13 @@
 #include <stdlib.h>
-
-enum token_tag
-{
-    TOK_UNDEFINED,
-    TOK_STRING,
-    TOK_INTEGER ,
-    TOK_REAL,
-    TOK_SYM,
-    TOK_PARENT_OPEN,
-    TOK_PARENT_CLOSE,
-};
-
-struct token
-{
-    struct token *next;
-    enum token_tag tag;
-    union
-    {
-        char *str;
-        char *sym;
-        long integer;
-        double real;
-    };
-};
-
-// static enum token_tag current_tag;
+#include <ctype.h>
+#include <stdbool.h>
+#include <string.h>
+#include "token.h"
 
 struct token *
 lex(char *input)
 {
-    struct tocken *token = token_new();
+    token_t *token = token_new();
 
     while (*input != '\0')
     {
@@ -40,7 +18,7 @@ lex(char *input)
                 {
                     bool is_real = false;
                     char *end = input;
-                    if (strncmp(end, "0x") == 0)
+                    if (strncmp(end, "0x", 2) == 0)
                         end += 2;
                     while (*end != '\0' && (isdigit(*end) || *end == '.'))
                     {
@@ -62,6 +40,9 @@ lex(char *input)
                 break;
             case TOK_STRING:
                 break;
+
+            default:
+                abort();
         }
     }
 
