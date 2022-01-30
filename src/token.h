@@ -19,7 +19,6 @@ typedef struct token
     union
     {
         char *str;
-        char *sym;
         long integer;
         double real;
     };
@@ -27,5 +26,9 @@ typedef struct token
 
 token_t *
 token_new(void);
+void
+token_destroy(token_t *token);
+void
+token_print(token_t *token);
 
 #endif

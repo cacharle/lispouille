@@ -1,10 +1,11 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 #include "token.h"
 
-struct token *
+token_t *
 lex(char *input)
 {
     token_t *token = token_new();
@@ -18,14 +19,36 @@ lex(char *input)
                 {
                     bool is_real = false;
                     char *end = input;
-                    if (strncmp(end, "0x", 2) == 0)
+                    if (*input == '-')
+                        end++;
+                    bool is_hex = strncmp(end, "0x", 2) == 0;
+                    if (is_hex)
                         end += 2;
-                    while (*end != '\0' && (isdigit(*end) || *end == '.'))
+                    bool is_octal = !is_hex && *end == '0';
+                    while (*end != '\0')
                     {
+                        if (is_hex)
+                        {
+                            if (!isxdigit(*end))
+                                break;
+                        }
+                        else if (is_octal)
+                        {
+                            if (!isdigit(*end))
+                                break;
+                        }
+                        else
+                        {
+                            if (!isdigit(*end) && *end != '.')
+                                break;
+                        }
                         if (*end == '.')
                         {
                             if (is_real)
-                                abort(); // error, already encoutered
+                            {
+                                fputs("Multiple '.' in number\n", stderr);
+                                abort();
+                            }
                             is_real = true;
                         }
                         end++;
@@ -42,9 +65,10 @@ lex(char *input)
                 break;
 
             default:
+                fputs("Undefined token tag\n", stderr);
                 abort();
         }
     }
 
-    return NULL;
+    return token;
 }
