@@ -32,8 +32,6 @@ token_push_front(token_t **root, token_t *token)
 static token_t *
 reverse_rec(token_t *token)
 {
-    if (token == NULL)
-        return NULL;
     if (token->next == NULL)
         return token;
     token_t *reversed = reverse_rec(token->next);
@@ -45,13 +43,15 @@ reverse_rec(token_t *token)
 void
 token_reverse(token_t **root)
 {
+    if (*root == NULL)
+        return;
     *root = reverse_rec(*root);
 }
 
 static char *token_tag_repr_lookup[] = {
     [TOK_UNDEFINED] = "undefined",
     [TOK_STRING] = "string",
-    [TOK_INTEGER] = "integer ",
+    [TOK_INTEGER] = "integer",
     [TOK_REAL] = "real",
     [TOK_SYMBOL] = "symbol",
     [TOK_PARENT_OPEN] = "parent_open",
@@ -65,17 +65,17 @@ token_print(token_t *token)
     {
         fputc('[', stdout);
         fputs(token_tag_repr_lookup[token->tag], stdout);
-        fputc(' ', stdout);
         switch (token->tag)
         {
         case TOK_SYMBOL:
-        case TOK_STRING: printf("\"%s\"", token->str); break;
-
-        case TOK_INTEGER: printf("%ld", token->integer); break;
-        case TOK_REAL: printf("%.2f", token->real); break;
+        case TOK_STRING: printf(" \"%s\"", token->str); break;
+        case TOK_INTEGER: printf(" %ld", token->integer); break;
+        case TOK_REAL: printf(" %.2f", token->real); break;
         default: break;
         }
         fputc(']', stdout);
+        if (token->next != NULL)
+            fputc(' ', stdout);
     }
     fputc('\n', stdout);
 }

@@ -4,7 +4,7 @@
 int
 main()
 {
-    token_t *token = lex("(((yes)))");
+    token_t *token = lex("(((313)))");
 
     token_print(token);
     return 0;
