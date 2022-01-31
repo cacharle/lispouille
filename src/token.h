@@ -7,7 +7,7 @@ enum token_tag
     TOK_STRING,
     TOK_INTEGER,
     TOK_REAL,
-    TOK_SYM,
+    TOK_SYMBOL,
     TOK_PARENT_OPEN,
     TOK_PARENT_CLOSE,
 };

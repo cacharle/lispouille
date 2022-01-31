@@ -17,7 +17,7 @@ token_destroy(token_t *token)
 {
     if (token->next != NULL)
         token_destroy(token->next);
-    if (token->tag == TOK_STRING || token->tag == TOK_SYM)
+    if (token->tag == TOK_STRING || token->tag == TOK_SYMBOL)
         free(token->str);
     free(token);
 }
@@ -34,7 +34,7 @@ static char *token_tag_repr_lookup[] = {
     [TOK_STRING] = "string",
     [TOK_INTEGER] = "integer ",
     [TOK_REAL] = "real",
-    [TOK_SYM] = "sym",
+    [TOK_SYMBOL] = "symbol",
     [TOK_PARENT_OPEN] = "parent_open",
     [TOK_PARENT_CLOSE] = "parent_close",
 };
@@ -49,7 +49,7 @@ token_print(token_t *token)
         fputc(' ', stdout);
         switch (token->tag)
         {
-        case TOK_SYM:
+        case TOK_SYMBOL:
         case TOK_STRING: printf("\"%s\"", token->str); break;
 
         case TOK_INTEGER: printf("%ld", token->integer); break;

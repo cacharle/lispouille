@@ -113,3 +113,19 @@ Test(lex, parent_close)
     cr_assert_not_null(token);
     cr_assert_eq(token->tag, TOK_PARENT_CLOSE);
 }
+
+Test(lex, symbol)
+{
+    token_t *token = lex("foo");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_SYMBOL);
+    cr_assert_str_eq(token->str, "foo");
+}
+
+Test(lex, symbol_non_alpha_char)
+{
+    token_t *token = lex("foo->bar");
+    cr_assert_not_null(token);
+    cr_assert_eq(token->tag, TOK_SYMBOL);
+    cr_assert_str_eq(token->str, "foo->bar");
+}

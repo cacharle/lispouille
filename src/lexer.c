@@ -75,9 +75,7 @@ lex_string(char **input_ptr)
     }
     token_t *token = token_new();
     token->tag = TOK_STRING;
-    size_t str_size = end - input;
-    token->str = strndup(input, str_size + 1);
-    token->str[str_size] = '\0';
+    token->str = strndup(input, end - input);
     *input_ptr = end + 1;
     for (size_t i = 0; token->str[i] != '\0'; i++)
     {
@@ -135,6 +133,14 @@ lex(char *input)
         }
         else if (isprint(*input) && !isspace(*input))
         {
+            token_t *token = token_new();
+            char    *end = input;
+            while (*end != '\0' && isprint(*end) && !isspace(*end))
+                end++;
+            token->str = strndup(input, end - input);
+            token->tag = TOK_SYMBOL;
+            token_push_front(&root, token);
+            input = end;
         }
     }
     return root;
