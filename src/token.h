@@ -29,8 +29,10 @@ token_new(void);
 void
 token_destroy(token_t *token);
 void
-token_print(token_t *token);
-void
 token_push_front(token_t **root, token_t *token);
+void
+token_reverse(token_t **root);
+void
+token_print(token_t *token);
 
 #endif

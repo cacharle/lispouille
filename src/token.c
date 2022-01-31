@@ -29,6 +29,25 @@ token_push_front(token_t **root, token_t *token)
     *root = token;
 }
 
+static token_t *
+reverse_rec(token_t *token)
+{
+    if (token == NULL)
+        return NULL;
+    if (token->next == NULL)
+        return token;
+    token_t *reversed = reverse_rec(token->next);
+    token->next->next = token;
+    token->next = NULL;
+    return reversed;
+}
+
+void
+token_reverse(token_t **root)
+{
+    *root = reverse_rec(*root);
+}
+
 static char *token_tag_repr_lookup[] = {
     [TOK_UNDEFINED] = "undefined",
     [TOK_STRING] = "string",

@@ -105,7 +105,7 @@ lex(char *input)
 
     while (*input != '\0')
     {
-        if (isspace(*input))
+        while (isspace(*input))
             input++;
         if (isdigit(*input) || *input == '-')
         {
@@ -135,7 +135,8 @@ lex(char *input)
         {
             token_t *token = token_new();
             char    *end = input;
-            while (*end != '\0' && isprint(*end) && !isspace(*end))
+            while (*end != '\0' && isprint(*end) && !isspace(*end) && *end != ')' &&
+                   *end != '(')
                 end++;
             token->str = strndup(input, end - input);
             token->tag = TOK_SYMBOL;
@@ -143,5 +144,6 @@ lex(char *input)
             input = end;
         }
     }
+    token_reverse(&root);
     return root;
 }
